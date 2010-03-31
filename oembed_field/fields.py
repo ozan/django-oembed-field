@@ -34,7 +34,7 @@ class OEmbedField(models.URLField):
         if not provider_rules:
             try:
                 from oembed.models import ProviderRule
-                provider_rules = (r.regex for r in ProviderRule.objects.all())
+                provider_rules = [r.regex for r in ProviderRule.objects.all()]
             except ImportError:
                 provider_rules = DEFAULT_PROVIDER_RULES
         self.provider_rules = provider_rules
