@@ -2,6 +2,7 @@ import re
 
 from django.core import exceptions
 from django.db import models
+from django.db.utils import DatabaseError
 
 DEFAULT_PROVIDER_RULES = (
     r'http://vimeo.com/\S*',
@@ -35,7 +36,7 @@ class OEmbedField(models.URLField):
             try:
                 from oembed.models import ProviderRule
                 provider_rules = [r.regex for r in ProviderRule.objects.all()]
-            except ImportError:
+            except (ImportError, DatabaseError):
                 provider_rules = DEFAULT_PROVIDER_RULES
         self.provider_rules = provider_rules
         super(OEmbedField, self).__init__(*args, **kwargs)
